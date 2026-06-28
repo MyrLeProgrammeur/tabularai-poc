@@ -1,5 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
+
+const API_BASE = import.meta.env.VITE_API_URL ?? ""
 import { Loader2, Download, Zap, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -51,7 +53,7 @@ function App() {
 
     try {
       setProgress("Running predictions (this may take 30–60s)…")
-      const res = await axios.post<PredictResponse>("/api/predict", fd, {
+      const res = await axios.post<PredictResponse>(`${API_BASE}/predict`, fd, {
         timeout: 300_000,
       })
       setResult(res.data)
@@ -68,7 +70,7 @@ function App() {
 
   function handleDownload() {
     if (!result) return
-    window.open(`/api/download/${result.download_token}`, "_blank")
+    window.open(`${API_BASE}/download/${result.download_token}`, "_blank")
   }
 
   return (
